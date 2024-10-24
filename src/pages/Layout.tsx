@@ -1,6 +1,9 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import TodoList from "./todolist/TodoList";
+import { dummyList } from "../mockData";
+import Detail from "./detail/Detail";
 
 function Layout() {
   const navigate = useNavigate();
@@ -19,17 +22,16 @@ function Layout() {
   }, [navigate]);
 
   return (
-    <>
-      {/* <GlobalNavigationBar /> */}
-      <Container>
-        <Outlet />
-      </Container>
-    </>
+    <Container>
+      <TodoList {...dummyList.data[0]} />
+      <Detail />
+    </Container>
   );
 }
 
 export default Layout;
 
 const Container = styled.div`
-  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
 `;

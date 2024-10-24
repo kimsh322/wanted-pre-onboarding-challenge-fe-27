@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./Layout";
-import TodoList from "./pages/TodoList";
+import Layout from "./pages/Layout";
+import Detail from "./pages/detail/Detail";
 
 export const router = createBrowserRouter([
   {
@@ -9,13 +9,13 @@ export const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
-        element: <TodoList />,
+        path: "detail/:id",
+        element: <Detail />,
       },
-      //   {
-      //     path: '/login',
-      //     element: <Login />,
-      //   },
     ],
   },
+  //   {
+  //     path: '/login',
+  //     element: <Login />,
+  //   },
 ]);
