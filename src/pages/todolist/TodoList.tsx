@@ -1,15 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { GetTodoType } from "../../apis/todos";
 
-interface Props {
-  title: string;
-  content: string;
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-function TodoList({ title, id }: Props) {
+function TodoList({ title, id }: GetTodoType) {
   return (
     <Container>
       <Link to={`detail/:${id}`}>{title}</Link>
@@ -19,8 +12,11 @@ function TodoList({ title, id }: Props) {
 
 export default TodoList;
 
-const Container = styled.div`
+const Container = styled.li`
   display: flex;
   width: 80%;
   height: 50px;
+  padding: 10px;
+  border: 1px solid black;
+  margin: 5px;
 `;

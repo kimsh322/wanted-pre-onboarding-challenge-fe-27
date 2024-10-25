@@ -20,7 +20,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />;
       </ThemeProvider>
-      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );
 }
