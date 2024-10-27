@@ -8,6 +8,13 @@ export const getTodos = async (token: string) => {
   return response.data.data;
 };
 
+export const getTodoById = async ({ token, id }: GetTodoByIdParams) => {
+  const response = await axios.get<TodoByIdResponseType>(`${currentServerUrl}/todos/${id}`, {
+    headers: { Authorization: token },
+  });
+  return response.data.data;
+};
+
 export interface TodosResponseType {
   data: GetTodoType[];
 }
@@ -18,4 +25,13 @@ export interface GetTodoType {
   id: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface GetTodoByIdParams {
+  token: string;
+  id: string;
+}
+
+export interface TodoByIdResponseType {
+  data: GetTodoType;
 }

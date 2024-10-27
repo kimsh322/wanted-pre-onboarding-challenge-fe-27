@@ -9,7 +9,7 @@ export const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       {
-        path: "detail/:id",
+        path: "/:id",
         element: <Detail />,
       },
     ],

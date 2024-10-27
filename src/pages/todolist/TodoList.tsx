@@ -5,7 +5,7 @@ import { GetTodoType } from "../../apis/todos";
 function TodoList({ title, id }: GetTodoType) {
   return (
     <Container>
-      <Link to={`detail/:${id}`}>{title}</Link>
+      <Link to={`/${id}`}>{title}</Link>
     </Container>
   );
 }

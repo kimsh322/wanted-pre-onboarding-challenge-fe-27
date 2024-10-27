@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useGetTodoById } from "../../hooks/queries/useGetTodoById";
 
 function Detail() {
   const { id } = useParams();
-  return <Container>Detail {id}</Container>;
+  const { data: todoData } = useGetTodoById({ token: "11", id: id ?? "" });
+  return <Container>{todoData?.content}</Container>;
 }
 
 export default Detail;
