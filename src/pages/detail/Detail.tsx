@@ -2,18 +2,41 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useGetTodoById } from "../../hooks/queries/useGetTodoById";
 import theme from "../../styles/theme";
+import Modal from "../../components/Modal";
+import WriteTodo from "./WriteTodo";
+import { useState } from "react";
 
 function Detail() {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isModifyModalOpen, setIsModifyModalOpen] = useState(false);
   const { id } = useParams();
   //TODO : 토큰 연결하기
   const { data: todoData } = useGetTodoById({ token: "11", id: id ?? "" });
+
+  const createTodoModal = {
+    width: "50%",
+    height: "500px",
+    children: <WriteTodo setIsOpen={setIsCreateModalOpen} />,
+    isOpen: isCreateModalOpen,
+    setIsOpen: setIsCreateModalOpen,
+  };
+  const modifyTodoModal = {
+    width: "50%",
+    height: "500px",
+    children: <WriteTodo setIsOpen={setIsModifyModalOpen} todo={todoData} />,
+    isOpen: isModifyModalOpen,
+    setIsOpen: setIsModifyModalOpen,
+  };
+
   return (
     <Container>
       <div className="head-line">
         <h2>상세</h2>
         <ButtonBox>
-          <button className="create">Todo 추가</button>
-          <button className="modify" disabled={!id}>
+          <button className="create" onClick={() => createTodoModal.setIsOpen(true)}>
+            Todo 추가
+          </button>
+          <button className="modify" disabled={!id} onClick={() => modifyTodoModal.setIsOpen(true)}>
             Todo 수정
           </button>
           <button className="delete" disabled={!id}>
@@ -22,6 +45,8 @@ function Detail() {
         </ButtonBox>
       </div>
       <ContentBox>{todoData?.content}</ContentBox>
+      <Modal {...createTodoModal} />
+      <Modal {...modifyTodoModal} />
     </Container>
   );
 }

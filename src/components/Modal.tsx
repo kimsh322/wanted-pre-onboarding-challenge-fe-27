@@ -62,7 +62,6 @@ const ModalView = styled.div<{ $width: string; $height: string }>`
   width: ${(props) => props.$width};
   height: ${(props) => props.$height};
   max-height: 80vh;
-  overflow: scroll;
   box-shadow: 2px 3px 5px 0;
   border-radius: 5px;
 `;
