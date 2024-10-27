@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TodoList from "./todolist/TodoList";
 import Detail from "./detail/Detail";
 import { useGetTodos } from "../hooks/queries/useGetTodos";
+import theme from "../styles/theme";
 
 function Layout() {
   const navigate = useNavigate();
@@ -22,13 +23,18 @@ function Layout() {
 
   return (
     <Container>
-      <h1>TodoList</h1>
+      <h1 className="title">TodoList</h1>
       <Wrapper>
-        <h2>할 일 목록</h2>
-        {todos?.map((todo) => {
-          return <TodoList {...todo} />;
-        })}
-        <h2>상세</h2>
+        <ListBox>
+          <div className="title-box">
+            <h2>할 일 목록</h2>
+          </div>
+          <ListWrapper>
+            {todos?.map((todo) => {
+              return <TodoList key={todo.id} {...todo} />;
+            })}
+          </ListWrapper>
+        </ListBox>
         <Detail />
       </Wrapper>
     </Container>
@@ -44,14 +50,41 @@ const Container = styled.div`
   width: 100%;
   min-height: 50vh;
   padding: 50px 10px;
+
+  .title {
+    ${theme.fontStyle.title2}
+  }
 `;
 
 const Wrapper = styled.ul`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 80%;
   margin: 10px 0;
-  padding: 10px 0;
-  background-color: skyblue;
+  padding: 20px;
+  background-color: ${theme.colors.lightBlue100};
+  border-radius: 20px;
+`;
+
+const ListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  gap: 10px;
+
+  .title-box {
+    display: flex;
+    align-items: center;
+    height: 40px;
+  }
+`;
+
+const ListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  margin-right: 10px;
+  // TODO 스크롤 확인하기
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

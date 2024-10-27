@@ -1,9 +1,15 @@
 const colors = {
+  gray100: "#D8DADF",
+  gray400: "#858D9D",
+  gray700: "#48505E",
+  gray900: "#1D2026",
+
   deepBlue100: "#C9CBE4",
   deepBlue400: "#555DA9",
   deepBlue700: "#1F2669",
   deepBlue900: "#12163E",
 
+  blue50: "#ECEFFB",
   blue100: "#D2D9F4",
   blue400: "#6881DC",
   blue700: "#2F4696",

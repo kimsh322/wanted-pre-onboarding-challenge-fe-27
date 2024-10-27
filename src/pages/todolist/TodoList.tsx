@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { GetTodoType } from "../../apis/todos";
+import theme from "../../styles/theme";
 
 function TodoList({ title, id }: GetTodoType) {
-  return (
-    <Container>
-      <Link to={`/${id}`}>{title}</Link>
-    </Container>
-  );
+  return <SLink to={`/${id}`}>{title}</SLink>;
 }
 
 export default TodoList;
 
-const Container = styled.li`
+const SLink = styled(Link)`
   display: flex;
-  width: 80%;
+  align-items: center;
+  width: 95%;
   height: 50px;
   padding: 10px;
-  border: 1px solid black;
-  margin: 5px;
+  border: 1px solid ${theme.colors.blue100};
+  border-radius: 10px;
+  margin: 0 0 5px 0;
+  text-decoration: none;
+  background-color: ${theme.colors.blue50};
 `;
