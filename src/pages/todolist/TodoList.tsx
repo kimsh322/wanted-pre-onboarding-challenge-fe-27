@@ -19,7 +19,7 @@ const SLink = styled(Link)<{ $isCurrent: boolean }>`
   display: flex;
   align-items: center;
   width: 95%;
-  height: 50px;
+  min-height: 50px;
   padding: 10px;
   border: 1px solid ${theme.colors.blue100};
   border-radius: 10px;

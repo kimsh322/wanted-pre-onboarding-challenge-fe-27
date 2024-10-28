@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TodoList from "./todolist/TodoList";
@@ -8,6 +8,7 @@ import theme from "../styles/theme";
 
 function Layout() {
   const navigate = useNavigate();
+  const [isExtend, setIsExtend] = useState(false);
   const token = localStorage.getItem("token");
   //TODO : 토큰 연결하기
   const { data: todos } = useGetTodos("123");
@@ -25,10 +26,13 @@ function Layout() {
     <Container>
       <h1 className="title">TodoList</h1>
       <Wrapper>
-        <ListBox>
-          <div className="title-box">
+        <ListBox $isExtend={isExtend}>
+          <TitleBox className="title-box">
             <h2>할 일 목록</h2>
-          </div>
+            <button className="arrow" onClick={() => setIsExtend(!isExtend)}>
+              {isExtend ? "<" : ">"}
+            </button>
+          </TitleBox>
           <ListWrapper>
             {todos?.map((todo) => {
               return <TodoList key={todo.id} {...todo} />;
@@ -48,7 +52,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 50vh;
+  min-height: 500px;
   padding: 50px 10px;
 
   .title {
@@ -59,22 +63,34 @@ const Container = styled.div`
 const Wrapper = styled.ul`
   display: flex;
   width: 80%;
+  height: 100%;
   margin: 10px 0;
-  padding: 20px;
+  padding: 30px;
   background-color: ${theme.colors.lightBlue100};
   border-radius: 20px;
 `;
 
-const ListBox = styled.div`
+const ListBox = styled.div<{ $isExtend: boolean }>`
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: ${({ $isExtend }) => ($isExtend ? "50%" : "30%")};
   gap: 10px;
+  transition-duration: 0.5s;
+`;
 
-  .title-box {
-    display: flex;
-    align-items: center;
-    height: 40px;
+const TitleBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: 40px;
+  padding: 10px;
+
+  .arrow {
+    font-size: ${theme.fontSize.l};
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
   }
 `;
 
@@ -83,7 +99,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   margin-right: 10px;
-  // TODO 스크롤 확인하기
+  max-height: 500px;
   &::-webkit-scrollbar {
     display: none;
   }

@@ -68,8 +68,8 @@ export default Detail;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 500px;
+  flex-grow: 1;
+  min-height: 500px;
 
   .head-line {
     display: flex;
@@ -126,7 +126,7 @@ const ButtonBox = styled.div`
 const ContentBox = styled.div`
   display: flex;
   width: 100%;
-  height: 400px;
+  height: 100%;
   border: 1px solid black;
   border-radius: 10px;
   padding: 15px;
