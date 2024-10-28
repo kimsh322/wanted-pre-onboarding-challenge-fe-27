@@ -8,6 +8,8 @@ import { useState } from "react";
 import Signup from "./Signup";
 import { validationCheck } from "./validate";
 import Tooltip from "./Tooltip";
+import { useSignin } from "../../hooks/queries/auth";
+import { SignupResponseType } from "../../apis/auth";
 
 const Login = () => {
   const [inputId] = useInput("");
@@ -16,6 +18,14 @@ const Login = () => {
   const navigate = useNavigate();
   const setToken = useGlobalStore((state) => state.setToken);
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
+
+  const onSuccess = (data: SignupResponseType) => {
+    setToken(data.token);
+    localStorage.setItem("token", data.token);
+    navigate("/");
+  };
+
+  const { mutate: signinMutate } = useSignin(onSuccess);
 
   const SignupModal = {
     isOpen: isSignupModalOpen,
@@ -28,6 +38,7 @@ const Login = () => {
   // 로그인 함수
   const handleSignIn = (event: React.SyntheticEvent) => {
     event.preventDefault();
+    signinMutate({ email: inputId.value, password: inputPassword.value });
   };
 
   return (

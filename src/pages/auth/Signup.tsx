@@ -3,7 +3,7 @@ import useInput from "../../hooks/useInput";
 import theme from "../../styles/theme";
 import { validationCheck } from "./validate";
 import Tooltip from "./Tooltip";
-import { useSignup } from "../../hooks/queries/useSignup";
+import { useSignup } from "../../hooks/queries/auth";
 import { SignupResponseType } from "../../apis/auth";
 import { useGlobalStore } from "../../zustand";
 import { useNavigate } from "react-router-dom";
