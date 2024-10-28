@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React from "react";
 import { GetTodoType } from "../../apis/todos";
 import theme from "../../styles/theme";
+import useInput from "../../hooks/useInput";
 
 interface Props {
   todo?: GetTodoType;
@@ -9,28 +10,21 @@ interface Props {
 }
 
 function WriteTodo({ todo, setIsOpen }: Props) {
-  const [title, setTitle] = useState(todo?.title ?? "");
-  const [content, setContent] = useState(todo?.content ?? "");
-
-  const handleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-  const handleContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value);
-  };
+  const [titleBind] = useInput(todo?.title ?? "");
+  const [contentBind] = useInput(todo?.content ?? "");
 
   // 변경사항 있는지 확인하는 함수
   const isValid = () => {
-    if ((todo?.title ?? "") === title && (todo?.content ?? "") === content) return true;
-    if (title === "" || content === "") return true;
+    if ((todo?.title ?? "") === titleBind.value && (todo?.content ?? "") === contentBind.value) return true;
+    if (titleBind.value === "" || contentBind.value === "") return true;
     return false;
   };
 
   return (
     <Container>
       <h3>TODO {todo ? "수정" : "추가"}</h3>
-      <input className="title" placeholder="Title" value={title} onChange={handleTitle}></input>
-      <textarea className="content" placeholder="Content" value={content} onChange={handleContent}></textarea>
+      <input className="title" placeholder="Title" {...titleBind}></input>
+      <textarea className="content" placeholder="Content" {...contentBind}></textarea>
       <ButtonBox>
         <button type="submit" className="submit" disabled={isValid()}>
           {todo ? "수정하기" : "추가하기"}
