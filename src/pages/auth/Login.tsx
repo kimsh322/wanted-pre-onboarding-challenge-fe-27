@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/useInput";
 import { useGlobalStore } from "../../zustand";
 import theme from "../../styles/theme";
@@ -10,22 +9,39 @@ import { validationCheck } from "./validate";
 import Tooltip from "./Tooltip";
 import { useSignin } from "../../hooks/queries/auth";
 import { SignupResponseType } from "../../apis/auth";
+import Message from "./Message";
+import { AxiosError } from "axios";
 
 const Login = () => {
   const [inputId] = useInput("");
   const [inputPassword] = useInput("");
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const setToken = useGlobalStore((state) => state.setToken);
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
 
   const onSuccess = (data: SignupResponseType) => {
     setToken(data.token);
+    setMessage(data.message);
     localStorage.setItem("token", data.token);
-    navigate("/");
+    setIsMessageModalOpen(true);
   };
 
-  const { mutate: signinMutate } = useSignin(onSuccess);
+  const onError = (error: AxiosError<{ details: string }>) => {
+    setMessage(error?.response?.data?.details ?? "");
+    setIsMessageModalOpen(true);
+  };
+
+  const { mutate: signinMutate, isSuccess } = useSignin(onSuccess, onError);
+
+  const messageModal = {
+    isOpen: isMessageModalOpen,
+    setIsOpen: setIsMessageModalOpen,
+    width: "300px",
+    height: "100px",
+    children: <Message message={message} isSuccess={isSuccess} setIsOpen={setIsMessageModalOpen} />,
+  };
 
   const SignupModal = {
     isOpen: isSignupModalOpen,
@@ -57,11 +73,14 @@ const Login = () => {
             로그인
           </button>
           <div className="sign-up-box" onClick={() => setIsSignupModalOpen(true)}>
-            <button className="sign-up">회원가입</button>
+            <button type="button" className="sign-up">
+              회원가입
+            </button>
           </div>
         </div>
       </Container>
       <Modal {...SignupModal} />
+      <Modal {...messageModal} />
     </>
   );
 };

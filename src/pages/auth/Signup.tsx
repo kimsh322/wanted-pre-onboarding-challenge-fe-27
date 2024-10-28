@@ -6,7 +6,10 @@ import Tooltip from "./Tooltip";
 import { useSignup } from "../../hooks/queries/auth";
 import { SignupResponseType } from "../../apis/auth";
 import { useGlobalStore } from "../../zustand";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Modal from "../../components/Modal";
+import Message from "./Message";
+import { AxiosError } from "axios";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,16 +18,32 @@ interface Props {
 function Signup({ setIsOpen }: Props) {
   const [inputId] = useInput("");
   const [inputPassword] = useInput("");
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
-  const navigate = useNavigate();
   const setToken = useGlobalStore((state) => state.setToken);
 
   const onSuccess = (data: SignupResponseType) => {
     setToken(data.token);
+    setMessage(data.message);
     localStorage.setItem("token", data.token);
-    navigate("/");
+    setIsMessageModalOpen(true);
   };
-  const { mutate: signupMutate } = useSignup(onSuccess);
+
+  const onError = (error: AxiosError<{ details: string }>) => {
+    setMessage(error?.response?.data?.details ?? "");
+    setIsMessageModalOpen(true);
+  };
+
+  const { mutate: signupMutate, isSuccess } = useSignup(onSuccess, onError);
+
+  const messageModal = {
+    isOpen: isMessageModalOpen,
+    setIsOpen: setIsMessageModalOpen,
+    width: "300px",
+    height: "100px",
+    children: <Message message={message} isSuccess={isSuccess} setIsOpen={setIsMessageModalOpen} />,
+  };
 
   const handleSignUp = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -45,10 +64,11 @@ function Signup({ setIsOpen }: Props) {
         <button type="submit" className="sign-up button" disabled={!isValid}>
           회원가입
         </button>
-        <button className="cancel button" onClick={() => setIsOpen(false)}>
+        <button type="button" className="cancel button" onClick={() => setIsOpen(false)}>
           취소
         </button>
       </div>
+      <Modal {...messageModal} />
     </Container>
   );
 }
