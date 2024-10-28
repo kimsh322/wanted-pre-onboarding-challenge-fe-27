@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import React from "react";
-import { GetTodoType } from "../../apis/todos";
+import { GetTodoType, TodoResponseType } from "../../apis/todos";
 import theme from "../../styles/theme";
 import useInput from "../../hooks/useInput";
 import { useCreateTodo, useUpdateTodo } from "../../hooks/queries/modifyTodo";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   todo?: GetTodoType;
@@ -13,13 +14,16 @@ interface Props {
 
 function WriteTodo({ todo, setIsOpen }: Props) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [titleBind] = useInput(todo?.title ?? "");
   const [contentBind] = useInput(todo?.content ?? "");
 
-  const onSuccess = () => {
+  const onSuccess = (data?: TodoResponseType) => {
     queryClient.invalidateQueries({ queryKey: ["todos"] });
     queryClient.invalidateQueries({ queryKey: ["todo", todo?.id ?? ""] });
     setIsOpen(false);
+    // 추가일 경우 navigate
+    if (!todo) navigate(`/${data?.data.id ?? ""}`);
   };
 
   const { mutate: createMutate } = useCreateTodo(onSuccess);
