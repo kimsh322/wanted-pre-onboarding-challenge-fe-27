@@ -3,7 +3,7 @@ import React from "react";
 import { GetTodoType } from "../../apis/todos";
 import theme from "../../styles/theme";
 import useInput from "../../hooks/useInput";
-import { useCreateTodo } from "../../hooks/queries/useCreateTodo";
+import { useCreateTodo, useUpdateTodo } from "../../hooks/queries/modifyTodo";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -23,12 +23,13 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   };
 
   const { mutate: createMutate } = useCreateTodo(onSuccess);
+  const { mutate: updateMutate } = useUpdateTodo(onSuccess);
 
   //TODO : 토큰 적용하기
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    // TODO : 수정 api 연결하기
-    if (todo) createMutate({ token: "11", title: titleBind.value, content: contentBind.value });
+
+    if (todo) updateMutate({ token: "11", title: titleBind.value, content: contentBind.value, id: todo.id });
     else createMutate({ token: "11", title: titleBind.value, content: contentBind.value });
   };
 

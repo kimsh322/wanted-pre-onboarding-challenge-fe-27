@@ -26,6 +26,17 @@ export const createTodo = async ({ token, title, content }: CreateTodoParams) =>
   return response.data;
 };
 
+export const updateTodo = async ({ token, title, content, id }: UpdateTodoParams) => {
+  const response = await axios.put<TodoResponseType>(
+    `${currentServerUrl}/todos/${id}`,
+    { title, content },
+    {
+      headers: { Authorization: token },
+    }
+  );
+  return response.data;
+};
+
 export interface TodosResponseType {
   data: GetTodoType[];
 }
@@ -51,4 +62,8 @@ export interface CreateTodoParams {
   token: string;
   title: string;
   content: string;
+}
+
+export interface UpdateTodoParams extends CreateTodoParams {
+  id: string;
 }
