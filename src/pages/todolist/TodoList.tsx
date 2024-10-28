@@ -1,15 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { GetTodoType } from "../../apis/todos";
 import theme from "../../styles/theme";
 
 function TodoList({ title, id }: GetTodoType) {
-  return <SLink to={`/${id}`}>{title}</SLink>;
+  const { id: comparisonId } = useParams();
+  const isCurrent = comparisonId === id;
+  return (
+    <SLink to={`/${id}`} isCurrent={isCurrent}>
+      {title}
+    </SLink>
+  );
 }
 
 export default TodoList;
 
-const SLink = styled(Link)`
+const SLink = styled(Link)<{ isCurrent: boolean }>`
   display: flex;
   align-items: center;
   width: 95%;
@@ -19,5 +25,9 @@ const SLink = styled(Link)`
   border-radius: 10px;
   margin: 0 0 5px 0;
   text-decoration: none;
-  background-color: ${theme.colors.blue50};
+  background-color: ${({ isCurrent }) => (isCurrent ? theme.colors.blue100 : theme.colors.blue50)};
+
+  &:hover {
+    background-color: ${theme.colors.blue200};
+  }
 `;

@@ -3,6 +3,8 @@ import React from "react";
 import { GetTodoType } from "../../apis/todos";
 import theme from "../../styles/theme";
 import useInput from "../../hooks/useInput";
+import { useCreateTodo } from "../../hooks/queries/useCreateTodo";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   todo?: GetTodoType;
@@ -10,8 +12,25 @@ interface Props {
 }
 
 function WriteTodo({ todo, setIsOpen }: Props) {
+  const queryClient = useQueryClient();
   const [titleBind] = useInput(todo?.title ?? "");
   const [contentBind] = useInput(todo?.content ?? "");
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["todos"] });
+    queryClient.invalidateQueries({ queryKey: ["todo", todo?.id ?? ""] });
+    setIsOpen(false);
+  };
+
+  const { mutate: createMutate } = useCreateTodo(onSuccess);
+
+  //TODO : 토큰 적용하기
+  const handleSubmit = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    // TODO : 수정 api 연결하기
+    if (todo) createMutate({ token: "11", title: titleBind.value, content: contentBind.value });
+    else createMutate({ token: "11", title: titleBind.value, content: contentBind.value });
+  };
 
   // 변경사항 있는지 확인하는 함수
   const isValid = () => {
@@ -21,7 +40,7 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   };
 
   return (
-    <Container>
+    <Container onSubmit={handleSubmit}>
       <h3>TODO {todo ? "수정" : "추가"}</h3>
       <input className="title" placeholder="Title" {...titleBind}></input>
       <textarea className="content" placeholder="Content" {...contentBind}></textarea>

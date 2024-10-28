@@ -9,10 +9,21 @@ export const getTodos = async (token: string) => {
 };
 
 export const getTodoById = async ({ token, id }: GetTodoByIdParams) => {
-  const response = await axios.get<TodoByIdResponseType>(`${currentServerUrl}/todos/${id}`, {
+  const response = await axios.get<TodoResponseType>(`${currentServerUrl}/todos/${id}`, {
     headers: { Authorization: token },
   });
   return response.data.data;
+};
+
+export const createTodo = async ({ token, title, content }: CreateTodoParams) => {
+  const response = await axios.post<TodoResponseType>(
+    `${currentServerUrl}/todos`,
+    { title, content },
+    {
+      headers: { Authorization: token },
+    }
+  );
+  return response.data;
 };
 
 export interface TodosResponseType {
@@ -32,6 +43,12 @@ export interface GetTodoByIdParams {
   id: string;
 }
 
-export interface TodoByIdResponseType {
+export interface TodoResponseType {
   data: GetTodoType;
+}
+
+export interface CreateTodoParams {
+  token: string;
+  title: string;
+  content: string;
 }
