@@ -37,6 +37,13 @@ export const updateTodo = async ({ token, title, content, id }: UpdateTodoParams
   return response.data;
 };
 
+export const deleteTodo = async ({ token, id }: GetTodoByIdParams) => {
+  const response = await axios.delete<{ data: null }>(`${currentServerUrl}/todos/${id}`, {
+    headers: { Authorization: token },
+  });
+  return response.data.data;
+};
+
 export interface TodosResponseType {
   data: GetTodoType[];
 }

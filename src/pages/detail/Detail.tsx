@@ -5,11 +5,14 @@ import theme from "../../styles/theme";
 import Modal from "../../components/Modal";
 import WriteTodo from "./WriteTodo";
 import { useState } from "react";
+import DeleteConfirm from "./DeleteConfirm";
 
 function Detail() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isModifyModalOpen, setIsModifyModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
+
   //TODO : 토큰 연결하기
   const { data: todoData } = useGetTodoById({ token: "11", id: id ?? "" });
 
@@ -28,6 +31,14 @@ function Detail() {
     setIsOpen: setIsModifyModalOpen,
   };
 
+  const deleteTodoModal = {
+    width: "300px",
+    height: "100px",
+    children: <DeleteConfirm setIsOpen={setIsDeleteModalOpen} id={todoData?.id ?? ""} />,
+    isOpen: isDeleteModalOpen,
+    setIsOpen: setIsDeleteModalOpen,
+  };
+
   return (
     <Container>
       <div className="head-line">
@@ -39,7 +50,7 @@ function Detail() {
           <button className="modify" disabled={!id} onClick={() => modifyTodoModal.setIsOpen(true)}>
             Todo 수정
           </button>
-          <button className="delete" disabled={!id}>
+          <button className="delete" disabled={!id} onClick={() => deleteTodoModal.setIsOpen(true)}>
             Todo 삭제
           </button>
         </ButtonBox>
@@ -47,6 +58,7 @@ function Detail() {
       <ContentBox>{todoData?.content}</ContentBox>
       <Modal {...createTodoModal} />
       <Modal {...modifyTodoModal} />
+      <Modal {...deleteTodoModal} />
     </Container>
   );
 }
