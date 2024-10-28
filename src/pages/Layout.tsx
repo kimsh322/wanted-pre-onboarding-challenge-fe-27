@@ -6,7 +6,6 @@ import { useGlobalStore } from "../zustand";
 
 function Layout() {
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
   const setToken = useGlobalStore((state) => state.setToken);
 

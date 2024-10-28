@@ -4,34 +4,62 @@ import { useState } from "react";
 import { useGetTodos } from "../../hooks/queries/useGetTodos";
 import TodoList from "./TodoList";
 import Detail from "../detail/Detail";
+import { useGlobalStore } from "../../zustand";
+import { useNavigate } from "react-router-dom";
 
 function TodoOutlet() {
   const [isExtend, setIsExtend] = useState(false);
+  const token = useGlobalStore((state) => state.token);
+  const setToken = useGlobalStore((state) => state.setToken);
+  const navigate = useNavigate();
 
-  //TODO : 토큰 연결하기
-  const { data: todos } = useGetTodos("123");
+  const { data: todos } = useGetTodos(token ?? "");
+
+  const handleLogout = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+    navigate("/auth");
+  };
 
   return (
-    <>
-      <ListBox $isExtend={isExtend}>
-        <TitleBox className="title-box">
-          <h2>할 일 목록</h2>
-          <button className="arrow" onClick={() => setIsExtend(!isExtend)}>
-            {isExtend ? "<" : ">"}
-          </button>
-        </TitleBox>
-        <ListWrapper>
-          {todos?.map((todo) => {
-            return <TodoList key={todo.id} {...todo} />;
-          })}
-        </ListWrapper>
-      </ListBox>
-      <Detail />
-    </>
+    <Container>
+      <Wrapper>
+        <ListBox $isExtend={isExtend}>
+          <TitleBox className="title-box">
+            <h2>할 일 목록</h2>
+            <button className="arrow" onClick={() => setIsExtend(!isExtend)}>
+              {isExtend ? "<" : ">"}
+            </button>
+          </TitleBox>
+          <ListWrapper>
+            {todos?.map((todo) => {
+              return <TodoList key={todo.id} {...todo} />;
+            })}
+          </ListWrapper>
+        </ListBox>
+        <Detail />
+      </Wrapper>
+      <LogoutBox>
+        <button className="logout" onClick={handleLogout}>
+          로그아웃
+        </button>
+      </LogoutBox>
+    </Container>
   );
 }
 
 export default TodoOutlet;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
 
 const ListBox = styled.div<{ $isExtend: boolean }>`
   display: flex;
@@ -65,5 +93,25 @@ const ListWrapper = styled.div`
   max-height: 500px;
   &::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+const LogoutBox = styled.div`
+  display: flex;
+  justify-content: right;
+  margin-top: 15px;
+
+  .logout {
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color: ${theme.colors.red400};
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${theme.colors.red700};
+    }
   }
 `;
