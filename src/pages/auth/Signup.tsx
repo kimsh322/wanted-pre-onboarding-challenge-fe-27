@@ -3,6 +3,10 @@ import useInput from "../../hooks/useInput";
 import theme from "../../styles/theme";
 import { validationCheck } from "./validate";
 import Tooltip from "./Tooltip";
+import { useSignup } from "../../hooks/queries/useSignup";
+import { SignupResponseType } from "../../apis/auth";
+import { useGlobalStore } from "../../zustand";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,9 +16,19 @@ function Signup({ setIsOpen }: Props) {
   const [inputId] = useInput("");
   const [inputPassword] = useInput("");
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
+  const navigate = useNavigate();
+  const setToken = useGlobalStore((state) => state.setToken);
+
+  const onSuccess = (data: SignupResponseType) => {
+    setToken(data.token);
+    localStorage.setItem("token", data.token);
+    navigate("/");
+  };
+  const { mutate: signupMutate } = useSignup(onSuccess);
 
   const handleSignUp = (event: React.SyntheticEvent) => {
     event.preventDefault();
+    signupMutate({ email: inputId.value, password: inputPassword.value });
   };
 
   return (
@@ -22,7 +36,7 @@ function Signup({ setIsOpen }: Props) {
       <Tooltip />
       <span className="header-text">회원가입</span>
       <div className="input-box">
-        <input id="id" {...inputId} placeholder="ID" />
+        <input id="id" {...inputId} placeholder="email" />
       </div>
       <div className="input-box">
         <input id="password" type="password" {...inputPassword} placeholder="password" />

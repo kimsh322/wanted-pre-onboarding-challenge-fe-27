@@ -37,7 +37,7 @@ const Login = () => {
           <Tooltip />
           <span className="header-text">Login</span>
           <div className="input-box">
-            <input id="id" {...inputId} placeholder="ID" />
+            <input id="id" {...inputId} placeholder="email" />
           </div>
           <div className="input-box">
             <input id="password" type="password" {...inputPassword} placeholder="password" />
