@@ -14,7 +14,7 @@ function Layout() {
     if (token) {
       setToken(token);
     } else {
-      navigate("/login");
+      navigate("/auth");
     }
   }, [navigate]);
 

@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
         element: <TodoOutlet />,
       },
       {
-        path: "/login",
+        path: "/auth",
         element: <Login />,
       },
     ],
