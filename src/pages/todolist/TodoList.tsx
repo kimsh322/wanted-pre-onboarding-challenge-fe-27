@@ -7,7 +7,7 @@ function TodoList({ title, id }: GetTodoType) {
   const { id: comparisonId } = useParams();
   const isCurrent = comparisonId === id;
   return (
-    <SLink to={`/${id}`} isCurrent={isCurrent}>
+    <SLink to={`/${id}`} $isCurrent={isCurrent}>
       {title}
     </SLink>
   );
@@ -15,7 +15,7 @@ function TodoList({ title, id }: GetTodoType) {
 
 export default TodoList;
 
-const SLink = styled(Link)<{ isCurrent: boolean }>`
+const SLink = styled(Link)<{ $isCurrent: boolean }>`
   display: flex;
   align-items: center;
   width: 95%;
@@ -25,7 +25,8 @@ const SLink = styled(Link)<{ isCurrent: boolean }>`
   border-radius: 10px;
   margin: 0 0 5px 0;
   text-decoration: none;
-  background-color: ${({ isCurrent }) => (isCurrent ? theme.colors.blue100 : theme.colors.blue50)};
+  background-color: ${({ $isCurrent }) => ($isCurrent ? theme.colors.blue100 : theme.colors.blue50)};
+  color: black;
 
   &:hover {
     background-color: ${theme.colors.blue200};
