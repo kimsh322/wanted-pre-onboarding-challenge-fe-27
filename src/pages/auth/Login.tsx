@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import { useState } from "react";
 import Signup from "./Signup";
 import { validationCheck } from "./validate";
+import Tooltip from "./Tooltip";
 
 const Login = () => {
   const [inputId] = useInput("");
@@ -33,6 +34,7 @@ const Login = () => {
     <>
       <Container onSubmit={handleSignIn}>
         <div className="content-box">
+          <Tooltip />
           <span className="header-text">Login</span>
           <div className="input-box">
             <input id="id" {...inputId} placeholder="ID" />
@@ -59,6 +61,7 @@ const Container = styled.form`
   justify-content: center;
   align-items: center;
   width: 100%;
+
   .content-box {
     display: flex;
     flex-direction: column;
@@ -69,6 +72,7 @@ const Container = styled.form`
     padding: 20px 0;
     border-radius: 10px;
     background-color: white;
+    position: relative;
 
     .header-text {
       ${theme.fontStyle.title4}

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import useInput from "../../hooks/useInput";
 import theme from "../../styles/theme";
 import { validationCheck } from "./validate";
+import Tooltip from "./Tooltip";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +19,7 @@ function Signup({ setIsOpen }: Props) {
 
   return (
     <Container onSubmit={handleSignUp}>
+      <Tooltip />
       <span className="header-text">회원가입</span>
       <div className="input-box">
         <input id="id" {...inputId} placeholder="ID" />
@@ -47,6 +49,7 @@ const Container = styled.form`
   padding: 20px 0;
   border-radius: 10px;
   background-color: white;
+  position: relative;
 
   .header-text {
     ${theme.fontStyle.title6}
