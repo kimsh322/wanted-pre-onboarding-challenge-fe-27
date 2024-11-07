@@ -12,12 +12,11 @@ import { SignupResponseType } from "../../apis/auth";
 import Message from "./Message";
 import { AxiosError } from "axios";
 import { auth } from "../../auth/authController";
+import useModal from "../../hooks/useModal";
 
 const Login = () => {
   const [inputId] = useInput("");
   const [inputPassword] = useInput("");
-  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
-  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const setToken = useGlobalStore((state) => state.setToken);
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
@@ -26,31 +25,29 @@ const Login = () => {
     setToken(data.token);
     setMessage(data.message);
     auth.setToken(data.token);
-    setIsMessageModalOpen(true);
+    messageModal.setIsOpen(true);
   };
 
   const onError = (error: AxiosError<{ details: string }>) => {
     setMessage(error?.response?.data?.details ?? "");
-    setIsMessageModalOpen(true);
+    messageModal.setIsOpen(true);
   };
-
   const { mutate: signinMutate, isSuccess } = useSignin(onSuccess, onError);
 
-  const messageModal = {
-    isOpen: isMessageModalOpen,
-    setIsOpen: setIsMessageModalOpen,
+  const signupModal = useModal({ width: "300px", height: "250px", children: <Signup /> });
+  const messageModal = useModal({
     width: "300px",
     height: "100px",
-    children: <Message message={message} isSuccess={isSuccess} setIsOpen={setIsMessageModalOpen} />,
-  };
+    children: <Message message={message} isSuccess={isSuccess} />,
+  });
 
-  const SignupModal = {
-    isOpen: isSignupModalOpen,
-    setIsOpen: setIsSignupModalOpen,
-    width: "300px",
-    height: "250px",
-    children: <Signup setIsOpen={setIsSignupModalOpen} />,
-  };
+  // const messageModal = {
+  //   isOpen: isMessageModalOpen,
+  //   setIsOpen: setIsMessageModalOpen,
+  //   width: "300px",
+  //   height: "100px",
+  //   children: <Message message={message} isSuccess={isSuccess} setIsOpen={setIsMessageModalOpen} />,
+  // };
 
   // 로그인 함수
   const handleSignIn = (event: React.SyntheticEvent) => {
@@ -73,14 +70,14 @@ const Login = () => {
           <button type="submit" className="sign-in" disabled={!isValid}>
             로그인
           </button>
-          <div className="sign-up-box" onClick={() => setIsSignupModalOpen(true)}>
+          <div className="sign-up-box" onClick={() => signupModal.setIsOpen(true)}>
             <button type="button" className="sign-up">
               회원가입
             </button>
           </div>
         </div>
       </Container>
-      <Modal {...SignupModal} />
+      <Modal {...signupModal} />
       <Modal {...messageModal} />
     </>
   );

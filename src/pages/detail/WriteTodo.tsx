@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   todo?: GetTodoType;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function WriteTodo({ todo, setIsOpen }: Props) {
@@ -21,7 +21,7 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   const onSuccess = (data?: TodoResponseType) => {
     queryClient.invalidateQueries({ queryKey: ["todos"] });
     queryClient.invalidateQueries({ queryKey: ["todo", todo?.id ?? ""] });
-    setIsOpen(false);
+    setIsOpen!(false);
     // 추가일 경우 navigate
     if (!todo) navigate(`/${data?.data.id ?? ""}`);
   };
@@ -53,7 +53,7 @@ function WriteTodo({ todo, setIsOpen }: Props) {
         <button type="submit" className="submit" disabled={isValid()}>
           {todo ? "수정하기" : "추가하기"}
         </button>
-        <button type="button" className="cancel" onClick={() => setIsOpen(false)}>
+        <button type="button" className="cancel" onClick={() => setIsOpen!(false)}>
           취소하기
         </button>
       </ButtonBox>

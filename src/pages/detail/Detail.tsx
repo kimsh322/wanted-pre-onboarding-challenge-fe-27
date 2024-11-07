@@ -4,40 +4,30 @@ import { useGetTodoById } from "../../hooks/queries/useGetTodoById";
 import theme from "../../styles/theme";
 import Modal from "../../components/Modal";
 import WriteTodo from "./WriteTodo";
-import { useState } from "react";
 import DeleteConfirm from "./DeleteConfirm";
+import useModal from "../../hooks/useModal";
 
 function Detail() {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isModifyModalOpen, setIsModifyModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
 
   //TODO : 토큰 연결하기
   const { data: todoData } = useGetTodoById({ token: "11", id: id ?? "" });
 
-  const createTodoModal = {
+  const createTodoModal = useModal({
     width: "50%",
     height: "500px",
-    children: <WriteTodo setIsOpen={setIsCreateModalOpen} />,
-    isOpen: isCreateModalOpen,
-    setIsOpen: setIsCreateModalOpen,
-  };
-  const modifyTodoModal = {
+    children: <WriteTodo />,
+  });
+  const modifyTodoModal = useModal({
     width: "50%",
     height: "500px",
-    children: <WriteTodo setIsOpen={setIsModifyModalOpen} todo={todoData} />,
-    isOpen: isModifyModalOpen,
-    setIsOpen: setIsModifyModalOpen,
-  };
-
-  const deleteTodoModal = {
+    children: <WriteTodo todo={todoData} />,
+  });
+  const deleteTodoModal = useModal({
     width: "300px",
     height: "100px",
-    children: <DeleteConfirm setIsOpen={setIsDeleteModalOpen} id={todoData?.id ?? ""} />,
-    isOpen: isDeleteModalOpen,
-    setIsOpen: setIsDeleteModalOpen,
-  };
+    children: <DeleteConfirm id={todoData?.id ?? ""} />,
+  });
 
   return (
     <Container>

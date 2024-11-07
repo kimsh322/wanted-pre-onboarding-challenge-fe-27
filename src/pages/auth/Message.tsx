@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 interface Props {
   message: string;
   isSuccess: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Message({ message, isSuccess, setIsOpen }: Props) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    setIsOpen(false);
+    setIsOpen!(false);
     if (isSuccess) navigate("/");
   };
 

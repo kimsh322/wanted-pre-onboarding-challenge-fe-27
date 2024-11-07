@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function DeleteConfirm({ id, setIsOpen }: Props) {
@@ -23,7 +23,7 @@ function DeleteConfirm({ id, setIsOpen }: Props) {
   const handleDelete = () => {
     deleteMutate({ token: "11", id });
     navigate("/");
-    setIsOpen(false);
+    setIsOpen!(false);
   };
 
   return (
@@ -33,7 +33,7 @@ function DeleteConfirm({ id, setIsOpen }: Props) {
         <button className="confirm" onClick={handleDelete}>
           삭제
         </button>
-        <button className="cancel" onClick={() => setIsOpen(false)}>
+        <button className="cancel" onClick={() => setIsOpen!(false)}>
           취소
         </button>
       </ButtonBox>

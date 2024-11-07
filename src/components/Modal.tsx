@@ -4,7 +4,7 @@ import ModalPortal from "./ModalPortal";
 interface Props {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children: JSX.Element;
+  children: React.ReactElement;
   width: string;
   height: string;
 }

@@ -13,7 +13,7 @@ import { AxiosError } from "axios";
 import { auth } from "../../auth/authController";
 
 interface Props {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Signup({ setIsOpen }: Props) {
@@ -65,7 +65,7 @@ function Signup({ setIsOpen }: Props) {
         <button type="submit" className="sign-up button" disabled={!isValid}>
           회원가입
         </button>
-        <button type="button" className="cancel button" onClick={() => setIsOpen(false)}>
+        <button type="button" className="cancel button" onClick={() => setIsOpen!(false)}>
           취소
         </button>
       </div>
