@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import theme from "../styles/theme";
-import { useAuthGuard } from "../auth/useAuthGuard";
+import { useAuthGuard } from "../hooks/useAuthGuard";
 
 function Layout() {
   useAuthGuard();

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useGlobalStore } from "../zustand";
 import { useEffect } from "react";
-import { auth } from "./authController";
+import { auth } from "../auth/authController";
 
 export const useAuthGuard = () => {
   const navigate = useNavigate();
