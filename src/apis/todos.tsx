@@ -1,7 +1,7 @@
 import axios from "axios";
 import { currentServerUrl } from ".";
 
-export const getTodos = async (token: string) => {
+export const getTodos = async (token: string | null) => {
   const response = await axios.get<TodosResponseType>(`${currentServerUrl}/todos`, {
     headers: { Authorization: token },
   });

@@ -4,20 +4,17 @@ import { useState } from "react";
 import { useGetTodos } from "../../hooks/queries/useGetTodos";
 import TodoList from "./TodoList";
 import Detail from "../detail/Detail";
-import { useGlobalStore } from "../../zustand";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../auth/authController";
 
 function TodoOutlet() {
   const [isExtend, setIsExtend] = useState(false);
-  const token = useGlobalStore((state) => state.token);
-  const setToken = useGlobalStore((state) => state.setToken);
+  const token = auth.getToken();
   const navigate = useNavigate();
 
-  const { data: todos } = useGetTodos(token ?? "");
+  const { data: todos } = useGetTodos(token);
 
   const handleLogout = () => {
-    setToken(null);
     auth.clear();
     navigate("/auth");
   };

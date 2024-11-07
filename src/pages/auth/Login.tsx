@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import useInput from "../../hooks/useInput";
-import { useGlobalStore } from "../../zustand";
 import theme from "../../styles/theme";
 import Modal from "../../components/Modal";
 import { useState } from "react";
@@ -18,11 +17,9 @@ const Login = () => {
   const [inputId] = useInput("");
   const [inputPassword] = useInput("");
   const [message, setMessage] = useState("");
-  const setToken = useGlobalStore((state) => state.setToken);
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
 
   const onSuccess = (data: SignupResponseType) => {
-    setToken(data.token);
     setMessage(data.message);
     auth.setToken(data.token);
     messageModal.setIsOpen(true);

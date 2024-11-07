@@ -5,7 +5,6 @@ import { validationCheck } from "./validate";
 import Tooltip from "./Tooltip";
 import { useSignup } from "../../hooks/queries/auth";
 import { SignupResponseType } from "../../apis/auth";
-import { useGlobalStore } from "../../zustand";
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import Message from "./Message";
@@ -22,10 +21,8 @@ function Signup({ setIsOpen }: Props) {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const isValid = validationCheck({ id: inputId.value, password: inputPassword.value });
-  const setToken = useGlobalStore((state) => state.setToken);
 
   const onSuccess = (data: SignupResponseType) => {
-    setToken(data.token);
     setMessage(data.message);
     auth.setToken(data.token);
     setIsMessageModalOpen(true);
