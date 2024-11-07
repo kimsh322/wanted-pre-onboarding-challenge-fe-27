@@ -1,21 +1,10 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import theme from "../styles/theme";
-import { useGlobalStore } from "../zustand";
+import { useAuthGuard } from "../auth/useAuthGuard";
 
 function Layout() {
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const setToken = useGlobalStore((state) => state.setToken);
-
-  useEffect(() => {
-    if (token) {
-      setToken(token);
-    } else {
-      navigate("/auth");
-    }
-  }, [navigate]);
+  useAuthGuard();
 
   return (
     <Container>

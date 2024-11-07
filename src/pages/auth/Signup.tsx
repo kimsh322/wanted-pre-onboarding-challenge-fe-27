@@ -10,6 +10,7 @@ import { useState } from "react";
 import Modal from "../../components/Modal";
 import Message from "./Message";
 import { AxiosError } from "axios";
+import { auth } from "../../auth/authController";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +27,7 @@ function Signup({ setIsOpen }: Props) {
   const onSuccess = (data: SignupResponseType) => {
     setToken(data.token);
     setMessage(data.message);
-    localStorage.setItem("token", data.token);
+    auth.setToken(data.token);
     setIsMessageModalOpen(true);
   };
 

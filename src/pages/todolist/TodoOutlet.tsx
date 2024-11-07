@@ -6,6 +6,7 @@ import TodoList from "./TodoList";
 import Detail from "../detail/Detail";
 import { useGlobalStore } from "../../zustand";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../auth/authController";
 
 function TodoOutlet() {
   const [isExtend, setIsExtend] = useState(false);
@@ -17,7 +18,7 @@ function TodoOutlet() {
 
   const handleLogout = () => {
     setToken(null);
-    localStorage.removeItem("token");
+    auth.clear();
     navigate("/auth");
   };
 

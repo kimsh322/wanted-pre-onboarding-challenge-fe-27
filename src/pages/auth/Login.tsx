@@ -11,6 +11,7 @@ import { useSignin } from "../../hooks/queries/auth";
 import { SignupResponseType } from "../../apis/auth";
 import Message from "./Message";
 import { AxiosError } from "axios";
+import { auth } from "../../auth/authController";
 
 const Login = () => {
   const [inputId] = useInput("");
@@ -24,7 +25,7 @@ const Login = () => {
   const onSuccess = (data: SignupResponseType) => {
     setToken(data.token);
     setMessage(data.message);
-    localStorage.setItem("token", data.token);
+    auth.setToken(data.token);
     setIsMessageModalOpen(true);
   };
 
