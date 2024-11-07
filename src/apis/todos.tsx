@@ -57,7 +57,7 @@ export interface GetTodoType {
 }
 
 export interface GetTodoByIdParams {
-  token: string;
+  token: string | null;
   id: string;
 }
 
@@ -66,7 +66,7 @@ export interface TodoResponseType {
 }
 
 export interface CreateTodoParams {
-  token: string;
+  token: string | null;
   title: string;
   content: string;
 }

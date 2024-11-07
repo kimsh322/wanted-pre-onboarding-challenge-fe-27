@@ -6,12 +6,12 @@ import Modal from "../../components/Modal";
 import WriteTodo from "./WriteTodo";
 import DeleteConfirm from "./DeleteConfirm";
 import useModal from "../../hooks/useModal";
+import { auth } from "../../auth/authController";
 
 function Detail() {
   const { id } = useParams();
-
-  //TODO : 토큰 연결하기
-  const { data: todoData } = useGetTodoById({ token: "11", id: id ?? "" });
+  const token = auth.getToken();
+  const { data: todoData } = useGetTodoById({ token, id: id ?? "" });
 
   const createTodoModal = useModal({
     width: "50%",

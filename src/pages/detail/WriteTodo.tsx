@@ -6,6 +6,7 @@ import useInput from "../../hooks/useInput";
 import { useCreateTodo, useUpdateTodo } from "../../hooks/queries/modifyTodo";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../auth/authController";
 
 interface Props {
   todo?: GetTodoType;
@@ -17,6 +18,7 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   const navigate = useNavigate();
   const [titleBind] = useInput(todo?.title ?? "");
   const [contentBind] = useInput(todo?.content ?? "");
+  const token = auth.getToken();
 
   const onSuccess = (data?: TodoResponseType) => {
     queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -29,12 +31,11 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   const { mutate: createMutate } = useCreateTodo(onSuccess);
   const { mutate: updateMutate } = useUpdateTodo(onSuccess);
 
-  //TODO : 토큰 적용하기
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    if (todo) updateMutate({ token: "11", title: titleBind.value, content: contentBind.value, id: todo.id });
-    else createMutate({ token: "11", title: titleBind.value, content: contentBind.value });
+    if (todo) updateMutate({ token, title: titleBind.value, content: contentBind.value, id: todo.id });
+    else createMutate({ token, title: titleBind.value, content: contentBind.value });
   };
 
   // 변경사항 있는지 확인하는 함수
