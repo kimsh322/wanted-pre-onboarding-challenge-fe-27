@@ -1,5 +1,6 @@
 import axios from "axios";
 import { currentServerUrl } from ".";
+import { Token } from "./todos";
 
 export const signup = async ({ email, password }: SignupParams) => {
   const response = await axios.post<SignupResponseType>(`${currentServerUrl}/users/create`, {
@@ -24,5 +25,5 @@ export interface SignupParams {
 
 export interface SignupResponseType {
   message: string;
-  token: string;
+  token: Token;
 }

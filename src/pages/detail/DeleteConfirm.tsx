@@ -3,6 +3,7 @@ import theme from "../../styles/theme";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteTodo } from "../../hooks/queries/modifyTodo";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../auth/authController";
 
 interface Props {
   id: string;
@@ -12,6 +13,7 @@ interface Props {
 function DeleteConfirm({ id, setIsOpen }: Props) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const token = auth.getToken();
 
   const onSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -21,7 +23,7 @@ function DeleteConfirm({ id, setIsOpen }: Props) {
   const { mutate: deleteMutate } = useDeleteTodo(onSuccess);
 
   const handleDelete = () => {
-    deleteMutate({ token: "11", id });
+    deleteMutate({ token, id });
     navigate("/");
     setIsOpen!(false);
   };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { currentServerUrl } from ".";
 
-export const getTodos = async (token: string | null) => {
+export const getTodos = async (token: Token) => {
   const response = await axios.get<TodosResponseType>(`${currentServerUrl}/todos`, {
     headers: { Authorization: token },
   });
@@ -44,6 +44,7 @@ export const deleteTodo = async ({ token, id }: GetTodoByIdParams) => {
   return response.data.data;
 };
 
+export type Token = string | null;
 export interface TodosResponseType {
   data: GetTodoType[];
 }
@@ -57,7 +58,7 @@ export interface GetTodoType {
 }
 
 export interface GetTodoByIdParams {
-  token: string | null;
+  token: Token;
   id: string;
 }
 
@@ -66,7 +67,7 @@ export interface TodoResponseType {
 }
 
 export interface CreateTodoParams {
-  token: string | null;
+  token: Token;
   title: string;
   content: string;
 }

@@ -1,3 +1,5 @@
+import { Token } from "../apis/todos";
+
 class AuthController {
   private storage: Storage;
 
@@ -9,8 +11,8 @@ class AuthController {
     return this.storage.getItem("token");
   }
 
-  setToken(token: string) {
-    return this.storage.setItem("token", token);
+  setToken(token: Token) {
+    return token ? this.storage.setItem("token", token) : null;
   }
 
   clear() {

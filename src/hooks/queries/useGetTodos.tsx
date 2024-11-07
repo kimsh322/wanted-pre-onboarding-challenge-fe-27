@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTodos } from "../../apis/todos";
+import { getTodos, Token } from "../../apis/todos";
 
-export const useGetTodos = (token: string | null) =>
+export const useGetTodos = (token: Token) =>
   useQuery({ queryKey: ["todos"], queryFn: () => getTodos(token) });
