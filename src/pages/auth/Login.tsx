@@ -38,14 +38,6 @@ const Login = () => {
     children: <Message message={message} isSuccess={isSuccess} />,
   });
 
-  // const messageModal = {
-  //   isOpen: isMessageModalOpen,
-  //   setIsOpen: setIsMessageModalOpen,
-  //   width: "300px",
-  //   height: "100px",
-  //   children: <Message message={message} isSuccess={isSuccess} setIsOpen={setIsMessageModalOpen} />,
-  // };
-
   // 로그인 함수
   const handleSignIn = (event: React.SyntheticEvent) => {
     event.preventDefault();
