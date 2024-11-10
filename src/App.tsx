@@ -6,12 +6,7 @@ import theme from "./styles/theme";
 import { router } from "./router";
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      // 300 second
-      staleTime: 1000 * 300,
-    },
-  },
+  defaultOptions: {},
 });
 
 function App() {
