@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React from "react";
-import { GetTodoType, TodoResponseType } from "../../apis/todos";
+import React, { useState } from "react";
+import { GetTodoType, PriorityType, TodoResponseType } from "../../apis/todos";
 import theme from "../../styles/theme";
 import useInput from "../../hooks/useInput";
 import { useCreateTodo, useUpdateTodo } from "../../hooks/queries/modifyTodo";
@@ -18,6 +18,7 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   const navigate = useNavigate();
   const [titleBind] = useInput(todo?.title ?? "");
   const [contentBind] = useInput(todo?.content ?? "");
+  const [priority, setPriority] = useState<PriorityType>("normal");
   const token = auth.getToken();
 
   const onSuccess = (data?: TodoResponseType) => {
@@ -34,8 +35,9 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    if (todo) updateMutate({ token, title: titleBind.value, content: contentBind.value, id: todo.id });
-    else createMutate({ token, title: titleBind.value, content: contentBind.value });
+    if (todo)
+      updateMutate({ token, title: titleBind.value, content: contentBind.value, id: todo.id, priority });
+    else createMutate({ token, title: titleBind.value, content: contentBind.value, priority });
   };
 
   // 변경사항 있는지 확인하는 함수
@@ -45,9 +47,27 @@ function WriteTodo({ todo, setIsOpen }: Props) {
     return false;
   };
 
+  const PRIORITY_OPTIONS: PriorityType[] = ["urgent", "normal", "low"];
+  console.log(priority);
   return (
     <Container onSubmit={handleSubmit}>
       <h3>TODO {todo ? "수정" : "추가"}</h3>
+      <RadioWrapper>
+        {PRIORITY_OPTIONS.map((option) => {
+          return (
+            <li key={option}>
+              <input
+                type="radio"
+                name="priority"
+                value={option}
+                checked={option === priority}
+                onChange={() => setPriority(option)}
+              />
+              {option}
+            </li>
+          );
+        })}
+      </RadioWrapper>
       <input className="title" placeholder="Title" {...titleBind}></input>
       <textarea className="content" placeholder="Content" {...contentBind}></textarea>
       <ButtonBox>
@@ -82,6 +102,10 @@ const Container = styled.form`
     padding: 10px;
     resize: none;
   }
+`;
+
+const RadioWrapper = styled.ul`
+  display: flex;
 `;
 
 const ButtonBox = styled.div`
