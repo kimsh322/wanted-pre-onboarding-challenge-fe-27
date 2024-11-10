@@ -6,13 +6,18 @@ import TodoList from "./TodoList";
 import Detail from "../detail/Detail";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../auth/authController";
+import { GetTodosParams } from "../../apis/todos";
+import { SELECTS, setOption } from "./options";
 
 function TodoOutlet() {
   const [isExtend, setIsExtend] = useState(false);
   const token = auth.getToken();
+  const [getTodosParams, setGetTodosParams] = useState<GetTodosParams>({
+    token,
+  });
   const navigate = useNavigate();
 
-  const { data: todos } = useGetTodos(token);
+  const { data: todos } = useGetTodos(getTodosParams);
 
   const handleLogout = () => {
     auth.clear();
@@ -29,6 +34,41 @@ function TodoOutlet() {
               {isExtend ? "<" : ">"}
             </button>
           </TitleBox>
+          <div>필터</div>
+          <div>
+            {SELECTS.map((el) => {
+              return (
+                <select
+                  key={el.name}
+                  onChange={(e) =>
+                    setOption({
+                      option: el.name,
+                      filter: getTodosParams,
+                      setFilter: setGetTodosParams,
+                      value: e.target.value,
+                    })
+                  }>
+                  {el.options.map((option) => {
+                    return (
+                      <option key={option.value} value={option.value}>
+                        {option.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              );
+            })}
+
+            <input
+              onChange={(e) =>
+                setOption({
+                  option: "keyword",
+                  filter: getTodosParams,
+                  setFilter: setGetTodosParams,
+                  value: e.target.value,
+                })
+              }></input>
+          </div>
           <ListWrapper>
             {todos?.map((todo) => {
               return <TodoList key={todo.id} {...todo} />;
