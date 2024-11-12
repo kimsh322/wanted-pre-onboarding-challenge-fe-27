@@ -1,23 +1,39 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Login from "./pages/auth/Login";
 import TodoOutlet from "./pages/todolist/TodoOutlet";
+import { auth } from "./auth/authController";
+
+const authLoader = () => {
+  const token = auth.getToken();
+  if (!token) {
+    return redirect("/auth");
+  }
+  return null;
+};
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    loader: authLoader,
     children: [
       {
-        path: "/",
+        index: true,
         element: <TodoOutlet />,
       },
       {
         path: "/:id",
         element: <TodoOutlet />,
       },
+    ],
+  },
+  {
+    path: "/auth",
+    element: <Layout />,
+    children: [
       {
-        path: "/auth",
+        index: true,
         element: <Login />,
       },
     ],
