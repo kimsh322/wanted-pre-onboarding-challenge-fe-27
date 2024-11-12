@@ -1,4 +1,4 @@
-import { GetTodosParams } from "../../apis/todos";
+import { GetTodosParams } from "../../../apis/todos";
 
 interface SelectType {
   name: keyof GetTodosParams;

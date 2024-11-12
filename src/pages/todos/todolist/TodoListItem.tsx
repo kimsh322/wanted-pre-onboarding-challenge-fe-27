@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { GetTodoType } from "../../apis/todos";
-import theme from "../../styles/theme";
+import { GetTodoType } from "../../../apis/todos";
+import theme from "../../../styles/theme";
 
-function TodoList({ title, id }: GetTodoType) {
+function TodoListItem({ title, id }: GetTodoType) {
   const { id: comparisonId } = useParams();
   const isCurrent = comparisonId === id;
   return (
@@ -13,7 +13,7 @@ function TodoList({ title, id }: GetTodoType) {
   );
 }
 
-export default TodoList;
+export default TodoListItem;
 
 const SLink = styled(Link)<{ $isCurrent: boolean }>`
   display: flex;

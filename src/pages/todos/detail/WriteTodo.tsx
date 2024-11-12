@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { GetTodoType, PriorityType, TodoResponseType } from "../../apis/todos";
-import theme from "../../styles/theme";
-import useInput from "../../hooks/useInput";
-import { useCreateTodo, useUpdateTodo } from "../../hooks/queries/modifyTodo";
+import { GetTodoType, PriorityType, TodoResponseType } from "../../../apis/todos";
+import theme from "../../../styles/theme";
+import useInput from "../../../hooks/useInput";
+import { useCreateTodo, useUpdateTodo } from "../../../hooks/queries/modifyTodo";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../auth/authController";
+import { auth } from "../../../auth/authController";
 
 interface Props {
   todo?: GetTodoType;
@@ -48,7 +48,7 @@ function WriteTodo({ todo, setIsOpen }: Props) {
   };
 
   const PRIORITY_OPTIONS: PriorityType[] = ["urgent", "normal", "low"];
-  console.log(priority);
+
   return (
     <Container onSubmit={handleSubmit}>
       <h3>TODO {todo ? "수정" : "추가"}</h3>

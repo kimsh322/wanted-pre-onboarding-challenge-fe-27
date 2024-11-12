@@ -1,8 +1,8 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Login from "./pages/auth/Login";
-import TodoOutlet from "./pages/todolist/TodoOutlet";
 import { auth } from "./auth/authController";
+import TodoOutlet from "./pages/todos/TodoOutlet";
 
 const authLoader = () => {
   const token = auth.getToken();

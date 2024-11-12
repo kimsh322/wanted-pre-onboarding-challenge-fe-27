@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useGetTodoById } from "../../hooks/queries/useGetTodoById";
-import theme from "../../styles/theme";
-import Modal from "../../components/Modal";
+import { useGetTodoById } from "../../../hooks/queries/useGetTodoById";
+import theme from "../../../styles/theme";
+import Modal from "../../../components/Modal";
 import WriteTodo from "./WriteTodo";
 import DeleteConfirm from "./DeleteConfirm";
-import useModal from "../../hooks/useModal";
-import { auth } from "../../auth/authController";
+import useModal from "../../../hooks/useModal";
+import { auth } from "../../../auth/authController";
 
 function Detail() {
   const { id } = useParams();

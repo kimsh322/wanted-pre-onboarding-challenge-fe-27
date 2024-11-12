@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import theme from "../../styles/theme";
+import theme from "../../../styles/theme";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteTodo } from "../../hooks/queries/modifyTodo";
+import { useDeleteTodo } from "../../../hooks/queries/modifyTodo";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../auth/authController";
+import { auth } from "../../../auth/authController";
 
 interface Props {
   id: string;

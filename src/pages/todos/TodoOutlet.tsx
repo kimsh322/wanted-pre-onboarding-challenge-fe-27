@@ -2,27 +2,22 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 import { useState } from "react";
 import { useGetTodos } from "../../hooks/queries/useGetTodos";
-import TodoList from "./TodoList";
-import Detail from "../detail/Detail";
-import { useNavigate } from "react-router-dom";
+import TodoListItem from "./todolist/TodoListItem";
+import Detail from "./detail/Detail";
 import { auth } from "../../auth/authController";
 import { GetTodosParams } from "../../apis/todos";
-import { SELECTS, setOption } from "./options";
+import TodoFilter from "./todolist/TodoFilter";
+import { handleLogout } from "../../auth/utils";
+import { useNavigate } from "react-router-dom";
 
 function TodoOutlet() {
-  const [isExtend, setIsExtend] = useState(false);
   const token = auth.getToken();
+  const navigate = useNavigate();
+  const [isExtend, setIsExtend] = useState(false);
   const [getTodosParams, setGetTodosParams] = useState<GetTodosParams>({
     token,
   });
-  const navigate = useNavigate();
-
   const { data: todos } = useGetTodos(getTodosParams);
-
-  const handleLogout = () => {
-    auth.clear();
-    navigate("/auth");
-  };
 
   return (
     <Container>
@@ -34,51 +29,17 @@ function TodoOutlet() {
               {isExtend ? "<" : ">"}
             </button>
           </TitleBox>
-          <div>필터</div>
-          <div>
-            {SELECTS.map((el) => {
-              return (
-                <select
-                  key={el.name}
-                  onChange={(e) =>
-                    setOption({
-                      option: el.name,
-                      filter: getTodosParams,
-                      setFilter: setGetTodosParams,
-                      value: e.target.value,
-                    })
-                  }>
-                  {el.options.map((option) => {
-                    return (
-                      <option key={option.value} value={option.value}>
-                        {option.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              );
-            })}
-
-            <input
-              onChange={(e) =>
-                setOption({
-                  option: "keyword",
-                  filter: getTodosParams,
-                  setFilter: setGetTodosParams,
-                  value: e.target.value,
-                })
-              }></input>
-          </div>
+          <TodoFilter getTodosParams={getTodosParams} setGetTodosParams={setGetTodosParams} />
           <ListWrapper>
             {todos?.map((todo) => {
-              return <TodoList key={todo.id} {...todo} />;
+              return <TodoListItem key={todo.id} {...todo} />;
             })}
           </ListWrapper>
         </ListBox>
         <Detail />
       </Wrapper>
       <LogoutBox>
-        <button className="logout" onClick={handleLogout}>
+        <button className="logout" onClick={() => handleLogout(navigate)}>
           로그아웃
         </button>
       </LogoutBox>
